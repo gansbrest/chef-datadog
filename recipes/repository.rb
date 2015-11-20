@@ -37,13 +37,18 @@ when 'debian'
 when 'rhel', 'fedora'
   include_recipe 'yum'
 
+  yum_key "DATADOG_RPM_KEY.public" do
+    prefix = node['platform_version'].to_i < 6 ? 'http' : 'https'
+    url "#{prefix}://yum.datadoghq.com/DATADOG_RPM_KEY.public"
+    action :add
+  end
+
   yum_repository 'datadog' do
     name 'datadog'
     description 'datadog'
     url node['datadog']['yumrepo']
     # Older versions of yum embed M2Crypto with SSL that doesn't support TLS1.2
-    prefix = node['platform_version'].to_i < 6 ? 'http' : 'https'
-    key "#{prefix}://yum.datadoghq.com/DATADOG_RPM_KEY.public"
+    key "DATADOG_RPM_KEY.public"
     action :add
   end
 end
