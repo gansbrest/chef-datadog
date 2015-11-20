@@ -43,7 +43,7 @@ when 'rhel', 'fedora'
     url node['datadog']['yumrepo']
     # Older versions of yum embed M2Crypto with SSL that doesn't support TLS1.2
     prefix = node['platform_version'].to_i < 6 ? 'http' : 'https'
-    gpgkey "#{prefix}://yum.datadoghq.com/DATADOG_RPM_KEY.public"
+    key "#{prefix}://yum.datadoghq.com/DATADOG_RPM_KEY.public"
     action :add
   end
 end
